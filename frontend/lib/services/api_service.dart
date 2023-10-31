@@ -5,7 +5,7 @@ import 'package:notesapp/models/note.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static String _baseUrl = "http://localhost:5000/notes/";
+  static String _baseUrl = "http://localhost:5000/notes";
 
   static Future<void> addNote(Note note) async {
     Uri requestUri = Uri.parse(_baseUrl + "/add");
@@ -25,6 +25,7 @@ class ApiService {
     Uri requestUri = Uri.parse(_baseUrl + "/list");
     var response = await http.post(requestUri, body: {"userid": userid});
     var decoded = jsonDecode(response.body);
+    print('working.......');
 
     List<Note> notes = [];
     for (var noteMap in decoded) {

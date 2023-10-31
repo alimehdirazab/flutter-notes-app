@@ -3,7 +3,6 @@ import 'package:notesapp/models/note.dart';
 import 'package:notesapp/services/api_service.dart';
 
 class NotesProvider with ChangeNotifier {
-
   bool isLoading = true;
   List<Note> notes = [];
 
@@ -12,7 +11,11 @@ class NotesProvider with ChangeNotifier {
   }
 
   List<Note> getFilteredNotes(String searchQuery) {
-    return notes.where((element) => element.title!.toLowerCase().contains(searchQuery.toLowerCase()) || element.content!.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+    return notes
+        .where((element) =>
+            element.title!.toLowerCase().contains(searchQuery.toLowerCase()) ||
+            element.content!.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
   }
 
   void sortNotes() {
@@ -27,7 +30,8 @@ class NotesProvider with ChangeNotifier {
   }
 
   void updateNote(Note note) {
-    int indexOfNote = notes.indexOf(notes.firstWhere((element) => element.id == note.id));
+    int indexOfNote =
+        notes.indexOf(notes.firstWhere((element) => element.id == note.id));
     notes[indexOfNote] = note;
     sortNotes();
     notifyListeners();
@@ -35,7 +39,8 @@ class NotesProvider with ChangeNotifier {
   }
 
   void deleteNote(Note note) {
-    int indexOfNote = notes.indexOf(notes.firstWhere((element) => element.id == note.id));
+    int indexOfNote =
+        notes.indexOf(notes.firstWhere((element) => element.id == note.id));
     notes.removeAt(indexOfNote);
     sortNotes();
     notifyListeners();
@@ -43,10 +48,15 @@ class NotesProvider with ChangeNotifier {
   }
 
   void fetchNotes() async {
-    notes = await ApiService.fetchNotes("rohitsemriwal");
+    print('Fetching notes...');
+    try {
+      notes = await ApiService.fetchNotes("alimehdiraza");
+      print('Notes fetched: $notes');
+    } catch (error) {
+      print('Error fetching notes: $error');
+    }
     sortNotes();
     isLoading = false;
     notifyListeners();
   }
-
 }
